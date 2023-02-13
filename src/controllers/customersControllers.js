@@ -15,7 +15,7 @@ export async function listCustomer(req, res) {
     const {id} = req.params
     try {
         const cliente = await db.query(`SELECT * FROM customers WHERE id = $1`, [id]);
-        if(!cliente.rows){
+        if(!cliente.rows[0]){
 return res.sendStatus(404)
         }
     res.send(cliente.rows[0])
@@ -46,7 +46,7 @@ export async function updateCustomer(req, res) {
     
     try {
     await db.query('UPDATE customers SET "name" = $1, "phone" = $2, "cpf" = $3, "birthday" = $4 WHERE "id" = $5', [name, phone, cpf, birthday, id]);
-    res.sendStatus(201)
+    res.sendStatus(200)
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
