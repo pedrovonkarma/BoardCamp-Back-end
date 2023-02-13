@@ -8,7 +8,7 @@ export async function listRents(req, res) {
         for(let i = 0; i<rents.length; i++){
             const customerName = await db.query(`SELECT name FROM customers WHERE id = $1`, [rents[i].customerId]);
             const gameName = await db.query(`SELECT name FROM games WHERE id = $1`, [rents[i].gameId]);
-            rents[i] = {...rents[i], customer: {id: rents[i].customerId, name: customerName}, game: {id: rents[i].gameId, name: gameName}}
+            rents[i] = {...rents[i], customer: {id: rents[i].customerId, name: customerName.rows[0].name}, game: {id: rents[i].gameId, name: gameName.rows[0].name}}
         }
     res.send(rents)
     
@@ -76,10 +76,11 @@ export async function deleteRent(req, res) {
        if(!rent.rows[0]){
         return res.sendStatus(404)
        }
-       if(rent.rows[0].returnDate ===null){
+       if(rent.rows[0].returnDate === null){
         return res.sendStatus(400)
        }
        await db.query(`DELETE FROM rentals WHERE "id" = $1`, [id])
+       res.sendStatus(200)
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
