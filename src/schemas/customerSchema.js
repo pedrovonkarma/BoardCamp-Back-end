@@ -1,11 +1,10 @@
 import joi from 'joi'
 
 const customerSchema = joi.object({
-    id: joi.number().required(),
     name: joi.string().required(),
-    phone: joi.string().required(),
-    cpf: joi.string().required(),
-    birthday: joi.string().required()
+    phone: joi.string().min(10).max(11).pattern(/^[0-9]+$/).required(),
+    cpf: joi.string().length(11).pattern(/^[0-9]+$/).required(),
+    birthday: joi.date().required()
 })
 
 export default customerSchema

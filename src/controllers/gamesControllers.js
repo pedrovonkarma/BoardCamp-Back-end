@@ -17,7 +17,6 @@ export async function createGame(req, res) {
     try {
         let id = await db.query(`SELECT * FROM games`)
         id = id.rows.length +1
-        console.log([id, name, image, stockTotal, pricePerDay])
     await db.query(`INSERT INTO games VALUES ($1, $2, $3, $4, $5)`, [id, name, image, stockTotal, pricePerDay]);
     res.sendStatus(201)
     } catch (error) {
